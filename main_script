@@ -1,0 +1,47 @@
+function sendGrades() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var startRow = 3;    // First row of data to process
+  var numRows = 15;    // Number of rows to process
+  var startColumn = 2; // First column of data to process
+  var numColumn = 11;  // Number of columns to process
+  // Fetch the range of cells
+  var dataRange = sheet.getRange(startRow, startColumn, 
+                     numRows, numColumn);
+  // Fetch values for each row in the Range.
+  var data = dataRange.getValues();
+  for (i in data) {
+    var row = data[i];
+    var emailid = row[0];
+    var name  = row[1];
+    var quiz1 = row[2];
+    var quiz2 = row[3];
+    var term1 = row[4];
+    var quiz3 = row[5];
+    var quiz4 = row[6];
+    var term2 = row[7];
+    var total = row[8];
+    var rtotal= row[9];
+    var prank = row[10];
+    var subject = "Report - Transport Phenomena";
+    var message = ""+
+      "Hi,\n"+
+      "\n"+
+      "Here is your total grade points for the semester.\n"+
+      "Sincerely,\n"+
+      "Your Name\n"+
+      "\n"+
+      name+" - Performance Statistics\n"+
+      " - Quiz 1: "+quiz1+"/10\n"+
+      " - Quiz 2: "+quiz2+"/10\n"+
+      " - Term 1: "+term1+"/30\n"+
+      " - Quiz 3: "+quiz3+"/10\n"+
+      " - Quiz 4: "+quiz4+"/10\n"+
+      " - Term 2: "+term2+"/30\n"+
+      " - Total: "+ total+"/100\n"+
+      " - Relative Total: "+Utilities.formatString('%4.1f',rtotal)+"%\n"+
+      " - Percent Rank: "+Utilities.formatString('%4.1f',prank)+"%";
+    MailApp.sendEmail(emailid+"@domain.extension", subject, message);
+ // Make sure the cell is updated right away in case the script is interrupted
+    SpreadsheetApp.flush();
+  }
+}
